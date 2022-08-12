@@ -125,75 +125,21 @@ git pull origin dev = git fetch origin dev + git merge FETCH_HEAD
 git push origin <本地分支名>:<远程分支名>     // 将本地分支的更新，推送到远程主机的分支   git push origin branchname
 ```
 
-
-
-### 丢弃修改的文件、取消暂存文件
+### 取消修改
 
 ```
-git restore <file>                             // 丢弃工作区的修改
-git restore .                                  // 丢弃所有工作区的修改
-git restore --staged <file>                    // 取消暂存
-git restore --staged .                         // 取消所有暂存
-git reset HEAD                                 // 取消所有暂存
-git checkout -- file                           // 取消暂存
-git checkout .                                 // 丢弃所有工作区的修改
+// 取消工作区文件的修改  即未执行git add .操作的文件
+git restore <file>                             // 取消工作区指定文件的修改
+git restore .                                  // 取消工作区所有文件的修改
+git checkout .                                 // 取消工作区所有文件的修改
 
-/* 
-* git clean 从你工作目录中删除所有没有 tracked，没有被管理过的文件。
-* git clean 和 git reset --hard 结合使用。
-* clean 影响没有被 track 过的文件（清除未被 add 或被 commit 的本地修改）
-* reset 影响被 track 过的文件 （回退到上一个 commit）
-*/
-git clean -n                  // 是一次 clean 的演习, 告诉你哪些文件会被删除，不会真的删除
-git clean -f                  // 删除当前目录下所有没有 track 过的文件,不会删除 .gitignore 文件里面指定的文件夹和文件, 不管这些文件有没有被 track 过
-git clean -f <path>           // 删除指定路径下的没有被 track 过的文件
-git clean -df                 // 删除当前目录下没有被 track 过的文件和文件夹  常用
-git clean -xf                 // 删除当前目录下所有没有 track 过的文件.不管是否是 .gitignore 文件里面指定的文件夹和文件
+// 取消暂存的文件  即已执行git add . 但是没有commit
+git restore --staged <file>                    // 取消暂存，文件回到工作区
+git restore --staged .                         // 取消所有暂存，文件回到工作区
+git reset HEAD                                 // 取消所有暂存，文件回到工作区
 ```
 
-
-
-### 对比差异
-
-```
-git diff <file>                    # 比较当前文件和暂存区文件差异 git diff
-git diff <id1><id1><id2>           # 比较两次提交之间的差异
-git diff <branch1> <branch2>       # 在两个分支之间比较
-git diff --staged                  # 比较暂存区和版本库差异
-git diff --cached  				  # 比较暂存区和版本库差异
-git diff --stat 				  # 仅仅比较统计信息
-```
-
-
-
-### 删除文件
-
-```
-//  删除文件 rm
-git rm <file>                                   // 将文件从暂存区和工作区中删除
-git rm -f <file>                                // 如果删除之前修改过并且已经放到暂存区域的话，则必须要用强制删除选项 -f
-git rm --cached <file>                          // 把文件从暂存区域移除，但仍然希望保留在当前工作目录中
-git rm –r *                                     // 可以递归删除，即如果后面跟的是一个目录做为参数，则会递归删除整个目录中的所有子目录和文件
-
-// 移动或重命名一个文件、目录或软连接
-git mv [file] [newfile]                          // 重命名    git mv README README.md
-git mv -f [file] [newfile]                       // 如果新文件名已经存在，但还是要重命名它，可以使用 -f 参数
-
-```
-
-### 查看提交历史 log
-
-```
-git log                                          // 查看提交历史
-git log -p   或 git log --patch                  // 显示每次提交所引入的差异（按 补丁 的格式输出）
-git log -p -2                                    // 限制显示的日志条目数量，显示最近的两次提交
-git log -p (branchname)                          // 查看某个分支的提交历史
-git log --pretty=oneline                         // 如果嫌输出信息太多，看得眼花缭乱的，可以加上，每个记录只显示一行
-
-git reflog                                       // 查看命令历史
-```
-
-### 回退 reset
+### 撤销commit
 
 `git reset [--soft | --mixed | --hard] [HEAD] `
 
@@ -266,9 +212,76 @@ $ git reset --hard origin/master    # 将本地的状态回退到和远程的一
 - HEAD^3 上上上一个版本
 - 以此类推...
 
+### 版本回退
+
+想要回退到某次提交，先`git log`查看日志，通过`git reset --hard 版本号`来执行回退，然后再强推一次`git push -f`即可。
+
+![img](../../images/others/git-reset.png)
+
+如上图所示，想要回到init的版本执行以下操作即可
+
+```
+// 先执行
+git reset --hard f67e6fd022bfb52d2d7
+
+//然后再强推
+git push -f
+```
 
 
-`git reset HEAD`  用于取消已缓存的内容。
+
+### 删除文件
+
+```
+/* 
+* git clean 删除工作区所有没有 tracked，没有被管理过的文件。
+* git clean 和 git reset --hard 结合使用。
+* clean 影响没有被 track 过的文件（清除未被 add 或被 commit 的本地修改）
+* reset 影响被 track 过的文件 （回退到上一个 commit）
+*/
+git clean -n                  // 是一次 clean 的演习, 告诉你哪些文件会被删除，不会真的删除
+git clean -f                  // 删除当前目录下所有没有 track 过的文件,不会删除 .gitignore 文件里面指定的文件夹和文件, 不管这些文件有没有被 track 过
+git clean -f <path>           // 删除指定路径下的没有被 track 过的文件
+git clean -df                 // 删除当前目录下没有被 track 过的文件和文件夹  常用
+git clean -xf                 // 删除当前目录下所有没有 track 过的文件.不管是否是 .gitignore 文件里面指定的文件夹和文件
+
+//  删除文件 rm
+git rm <file>                                   // 将文件从暂存区和工作区中删除
+git rm -f <file>                                // 如果删除之前修改过并且已经放到暂存区域的话，则必须要用强制删除选项 -f
+git rm --cached <file>                          // 把文件从暂存区域移除，但仍然希望保留在当前工作目录中
+git rm –r *                                     // 可以递归删除，即如果后面跟的是一个目录做为参数，则会递归删除整个目录中的所有子目录和文件
+```
+
+
+
+
+
+
+
+### 对比差异
+
+```
+git diff <file>                    # 比较当前文件和暂存区文件差异 git diff
+git diff <id1><id1><id2>           # 比较两次提交之间的差异
+git diff <branch1> <branch2>       # 在两个分支之间比较
+git diff --staged                  # 比较暂存区和版本库差异
+git diff --cached  				  # 比较暂存区和版本库差异
+git diff --stat 				  # 仅仅比较统计信息
+```
+
+
+
+### 查看提交历史 log
+
+```
+git log                                          // 查看提交历史
+git log -p   或 git log --patch                  // 显示每次提交所引入的差异（按 补丁 的格式输出）
+git log -p -2                                    // 限制显示的日志条目数量，显示最近的两次提交
+git log -p (branchname)                          // 查看某个分支的提交历史
+git log --pretty=oneline                         // 如果嫌输出信息太多，看得眼花缭乱的，可以加上，每个记录只显示一行
+
+git reflog                                       // 查看命令历史
+```
 
 ### 打标签 tag
 
