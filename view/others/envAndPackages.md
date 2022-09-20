@@ -1,6 +1,7 @@
 这里是记录软件环境及项目安装依赖过程中，所遇到的报错及解决方案
 
 ### 1. <font color=red>gyp ERR! stack Error: Could not find any Visual Studio installation to use at VisualStudioFinder.fail</font>
+
 ![image.png](../../images/others/node-gyp.png)
 
 **解决方案：** 打开cmd,输入`npm install --global --production windows-build-tools`

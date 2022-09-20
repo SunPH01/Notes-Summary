@@ -16,11 +16,8 @@ fork通常来说，就是copy。例如：团队开发了一个项目ProjectA，�
 
 到此项目已经fork到自己仓库了，接下来就可以进行开发了。
 
-1. 获取远程仓库A上分支到自己仓库；
-   `git fetch upstream 远程分支名`  （也可以加远程分支名，就是获取所有远程分支）
-
-2. 获取远程分支更新；
-   `git merge upstream 远程分支名称`
+1. 获取远程仓库更新；
+   `git pull upstream 远程分支名`  （也可以加远程分支名，就是获取所有远程分支）
 
 3. 修改代码；
 
@@ -36,7 +33,7 @@ fork通常来说，就是copy。例如：团队开发了一个项目ProjectA，�
 
     `git commit -m 'xxx'`
 
-7. push前需要再同步一下远程分支到自己仓库；（即执行步骤1、2）
+7. push前需要再同步一下远程分支到自己仓库；（即执行步骤1）
 
 8. 推送代码到自己的远程仓库；
 
@@ -125,19 +122,7 @@ git pull origin dev = git fetch origin dev + git merge FETCH_HEAD
 git push origin <本地分支名>:<远程分支名>     // 将本地分支的更新，推送到远程主机的分支   git push origin branchname
 ```
 
-### 取消修改
 
-```
-// 取消工作区文件的修改  即未执行git add .操作的文件
-git restore <file>                             // 取消工作区指定文件的修改
-git restore .                                  // 取消工作区所有文件的修改
-git checkout .                                 // 取消工作区所有文件的修改
-
-// 取消暂存的文件  即已执行git add . 但是没有commit
-git restore --staged <file>                    // 取消暂存，文件回到工作区
-git restore --staged .                         // 取消所有暂存，文件回到工作区
-git reset HEAD                                 // 取消所有暂存，文件回到工作区
-```
 
 ### 撤销commit
 
@@ -228,7 +213,19 @@ git reset --hard f67e6fd022bfb52d2d7
 git push -f
 ```
 
+### 取消修改
 
+```
+// 取消工作区文件的修改  即未执行git add .操作的文件
+git restore <file>                             // 取消工作区指定文件的修改
+git restore .                                  // 取消工作区所有文件的修改
+git checkout .                                 // 取消工作区所有文件的修改
+
+// 取消暂存的文件  即已执行git add . 但是没有commit
+git restore --staged <file>                    // 取消暂存，文件回到工作区
+git restore --staged .                         // 取消所有暂存，文件回到工作区
+git reset HEAD                                 // 取消所有暂存，文件回到工作区
+```
 
 ### 删除文件
 
