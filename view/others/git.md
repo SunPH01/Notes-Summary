@@ -76,7 +76,7 @@ git switch branchname                    // 切换到 branchname
 ### 删除分支
 
 ```
-git branch -d branchname                // 删除分支 -d选项只能删除已经参与了合并的分支，对于未有合并的分支是无法删除的。如										                      果想强制删除一个分支，可以使用-D选项
+git branch -d branchname                // 删除分支 -d选项只能删除已经参与了合并的分支，对于未有合并的分支是无法删除的。如果想强制删除一个分支，可以使用-D选项
 git branch -d -r branchname             //删除远程分支，删除后还需推送到服务器
 git push origin:branchname              //删除后推送至服务器
 git push -d origin branchname            // 删除远程分支
@@ -320,7 +320,7 @@ git tag -a v1.2 9fceb02 -m "xxxx"
 
 ```
 git stash                        // 会把暂存区和工作区的改动贮藏起来
-git stash push -m 'XXX'          // 贮藏 并添加备注
+git stash save 'XXX'             // 贮藏 并添加备注
 git stash list                   // 查看贮藏列表
 git stash apply                  // 应用贮藏 默认应用最新一个,即stash@{0}  不会把存储从存储列表中删除
 git stash apply stash@{1}        //  应用第二个贮藏   git stash apply stash@{$num}
