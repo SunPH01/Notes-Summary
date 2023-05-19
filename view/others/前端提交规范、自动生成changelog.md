@@ -411,3 +411,9 @@ module.exports = {
 }
 ```
 
+**忽略校验**
+
+```
+git commit -m "feat:xxxx" --no-verify
+```
+
